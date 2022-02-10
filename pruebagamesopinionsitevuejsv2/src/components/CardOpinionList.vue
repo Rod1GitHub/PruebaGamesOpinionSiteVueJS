@@ -1,7 +1,11 @@
 <template>
   <div>
     <h1>Lista de Opiniones</h1>
-    <div class="container alert alert-danger move-left" role="alert">
+    <div
+      v-if="!opiniones.length"
+      class="container alert alert-danger move-left"
+      role="alert"
+    >
       No existen opiniones por MOSTRAR
     </div>
 

@@ -1,103 +1,106 @@
 <template>
   <div>
     <h1>Lista de juegos disponibles</h1>
-    <section v-for="(game, index) in getterAllGames" v-bind:key="index">
-      <div class="card" style="width: 18rem">
-        <img
-          v-bind:src="game.background_image"
-          class="card-img-top"
-          alt="game image"
-        />
-        <div class="card-body to-left">
-          <h1>Array index: {{ index }}</h1>
-          <h5 class="card-title">{{ game.name }}</h5>
-        </div>
-        <ul class="list-group list-group-flush to-left">
-          <li class="list-group-item">Rating: {{ game.rating }}</li>
-          <li class="list-group-item">Released: {{ game.released }}</li>
-          <li class="list-group-item">Updated: {{ game.updated }}</li>
-        </ul>
-        <div class="card-body">
-          <!-- Button trigger modal -->
-          <button
-            type="button"
-            class="btn btn-primary"
-            data-bs-toggle="modal"
-            :data-bs-target="`#modal-${index}`"
-          >
-            Opinar Index {{ index }}
-          </button>
-          <div>
-            <!-- Modal -->
-            <div
-              class="modal fade"
-              :id="`modal-${index}`"
-              tabindex="-1"
-              aria-labelledby="exampleModalLabel"
-              aria-hidden="true"
+    <div class="card-group">
+      <section v-for="(game, index) in getterAllGames" v-bind:key="index">
+        <div class="card" style="width: 18rem">
+          <img
+            v-bind:src="game.background_image"
+            class="card-img-top"
+            alt="game image"
+          />
+          <div class="card-body to-left">
+            <h5 class="card-title">{{ game.name }}</h5>
+          </div>
+          <ul class="list-group list-group-flush to-left">
+            <li class="list-group-item">Rating: {{ game.rating }}</li>
+            <li class="list-group-item">Released: {{ game.released }}</li>
+            <li class="list-group-item">Updated: {{ game.updated }}</li>
+          </ul>
+          <div class="card-body">
+            <!-- Button trigger modal -->
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              :data-bs-target="`#modal-${index}`"
             >
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">
-                      Modal title {{ index }} Escribe tu opinion para el juego:
-                      {{ game.name }}
-                    </h5>
-
+              Opinar
+            </button>
+            <div>
+              <!-- Modal -->
+              <div
+                class="modal fade"
+                :id="`modal-${index}`"
+                tabindex="-1"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">
+                        Escribe tu opinion para el juego:
+                        <br />
+                        {{ game.name }}
+                      </h5>
+                      <!-- 
                     <button
                       type="button"
                       class="btn-close"
                       data-bs-dismiss="modal"
                       aria-label="Close"
-                    ></button>
-                  </div>
-                  <div class="modal-body">
-                    <div>
-                      <label for="inputName" class="form-label">Nombre:</label>
+                    ></button> -->
+                    </div>
+                    <div class="modal-body">
+                      <div>
+                        <!--  <label for="inputName" class="form-label">Nombre:</label>
                       <input
                         type="text"
                         placeholder="Tu nombre aquí"
                         id="inputName"
                         class="form-control"
                         aria-describedby="inputYourName"
-                      />
+                      /> -->
 
-                      <label for="textarea" class="form-label"
-                        >Opiniones:</label
-                      >
+                        <label for="textarea" class="form-label"
+                          >Opiniones:</label
+                        >
 
-                      <textarea
-                        v-model="opinion"
-                        class="form-control"
-                        placeholder="Tu opinión debe ir aquí"
-                        id="textarea"
-                        style="height: 100px"
-                      ></textarea>
+                        <textarea
+                          v-model="opinion"
+                          class="form-control"
+                          placeholder="Tu opinión debe ir aquí"
+                          id="textarea"
+                          style="height: 100px"
+                        ></textarea>
+                      </div>
                     </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button
-                      type="button"
-                      class="btn btn-secondary"
-                      data-bs-dismiss="modal"
-                    >
-                      Close
-                    </button>
-                    <button
-                      @click="agregarOpinion"
-                      type="button"
-                      class="btn btn-primary"
-                    >
-                      Guardar Opinion {{ index }}
-                    </button>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                      >
+                        Close
+                      </button>
+                      <button
+                        @click="agregarOpinion"
+                        data-bs-dismiss="modal"
+                        type="button"
+                        class="btn btn-primary"
+                      >
+                        Guardar
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
     <!--     This is the way of passing an index into the key and into the value    
       <div> 
       <b-button variant="primary" v-b-modal:[`modal-${index}`]

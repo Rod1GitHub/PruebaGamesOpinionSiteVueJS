@@ -44,9 +44,8 @@ export default new Vuex.Store({
   mutations: {
     AGREGAR_OPINION(state, opinion) {
       const id = Date.now();
-      const personName = "";
-      const gameName = "";
-
+      const personName = "personNamePlaceHolder";
+      const gameName = "gameNamePlaceHolder";
       state.opiniones.push({ id, personName, gameName, opinion });
     },
     SET_OPINIONS(state, opiniones) {
@@ -71,7 +70,9 @@ export default new Vuex.Store({
       let { opiniones } = state;
       opiniones = opiniones.map((opinion) => {
         if (opinion.id === id) {
-          return { opinion: nuevaOpinion.opinion, id };
+          const personName = "personNamePlaceHolderEditado";
+          const gameName = "gameNamePlaceHolderEditado";
+          return { opinion: nuevaOpinion.opinion, id, personName, gameName };
         } else return opinion;
       });
 

@@ -2,7 +2,11 @@
   <div>
     <h1>Administrando la Lista de Opiniones</h1>
 
-    <div class="container alert alert-danger move-left" role="alert">
+    <div
+      v-if="!opiniones.length"
+      class="container alert alert-danger move-left"
+      role="alert"
+    >
       No existen opiniones por ADMINISTRAR
     </div>
 
@@ -24,7 +28,9 @@
               <tbody>
                 <tr
                   class="move-left"
-                  v-for="({ opinion, id }, i) in opiniones"
+                  v-for="(
+                    { opinion, id, personName, gameName }, i
+                  ) in opiniones"
                   :key="i"
                 >
                   <th scope="row">{{ id }}</th>

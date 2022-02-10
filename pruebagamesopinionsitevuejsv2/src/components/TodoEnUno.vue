@@ -1,12 +1,11 @@
 <template>
   <div>
-    <h1>Home Page</h1>
+    <h1>barra global para testeo manual</h1>
     <input v-model="opinion" />
     <button @click="agregarOpinion">Agregar opinión</button>
-
-    <h1>About page</h1>
-    <input v-model="busqueda" />
+    <!-- <input v-model="busqueda" /> -->
     <ul>
+      <h5>Listado de opiniones</h5>
       <li v-for="({ opinion, id }, i) in opiniones" :key="i">
         {{ opinion }}
         <button @click="editOpinion(opinion, id)">Editar</button>
@@ -24,7 +23,6 @@ import { mapState } from "vuex";
 import { mapGetters } from "vuex";
 import { mapMutations } from "vuex";
 import { mapActions } from "vuex";
-
 export default {
   name: "TodoEnUno",
   data() {
