@@ -65,7 +65,9 @@
                       <label for="textarea" class="form-label"
                         >Opiniones:</label
                       >
+
                       <textarea
+                        v-model="opinion"
                         class="form-control"
                         placeholder="Tu opinión debe ir aquí"
                         id="textarea"
@@ -82,7 +84,7 @@
                       Close
                     </button>
                     <button
-                      @click="myButtonMethod([`${index}`])"
+                      @click="agregarOpinion"
                       type="button"
                       class="btn btn-primary"
                     >
@@ -123,7 +125,15 @@ export default {
   },
   components: {},
   computed: {
-    ...mapGetters(["getterAllGames", "getterAllOpinions"]),
+    opiniones() {
+      const { busqueda } = this;
+      return this.opinionesEncontradas(busqueda);
+    },
+    ...mapGetters([
+      "getterAllGames",
+      "getterAllOpinions",
+      "opinionesEncontradas",
+    ]),
     ...mapState({
       stateCount: (state) => state.countKey, // one way
       countAliasComputed: "countKey", // another way of writing it
@@ -150,8 +160,7 @@ export default {
     agregarOpinion() {
       const { opinion } = this;
       this.agregar_Opinion(opinion);
-      const { user } = this;
-      this.this.opinion = "";
+      this.opinion = "";
     },
   },
 };

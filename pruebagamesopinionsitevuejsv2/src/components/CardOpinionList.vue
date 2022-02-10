@@ -23,10 +23,10 @@
             role="button"
             aria-expanded="false"
             aria-controls="collapseExample"
-            ><i class="fas fa-angle-down"></i>
+            >Hide/Show<i class="fas fa-angle-down"></i>
           </a>
         </div>
-        <div class="collapse" :id="`collapse-${opinion.id}`">
+        <div class="collapse show" :id="`collapse-${opinion.id}`">
           <div class="card-body">
             <p>{{ opinion.opinion }}</p>
           </div>
@@ -51,7 +51,15 @@ export default {
   },
   components: {},
   computed: {
-    ...mapGetters(["getterAllGames", "getterAllOpinions"]),
+    opiniones() {
+      const { busqueda } = this;
+      return this.opinionesEncontradas(busqueda);
+    },
+    ...mapGetters([
+      "getterAllGames",
+      "getterAllOpinions",
+      "opinionesEncontradas",
+    ]),
     ...mapState({
       stateCount: (state) => state.countKey, // one way
       countAliasComputed: "countKey", // another way of writing it

@@ -1,8 +1,21 @@
 <template>
   <div>
+    <h1>Home Page</h1>
     <input v-model="opinion" />
     <button @click="agregarOpinion">Agregar opinión</button>
-    <br />
+
+    <h1>About page</h1>
+    <input v-model="busqueda" />
+    <ul>
+      <li v-for="({ opinion, id }, i) in opiniones" :key="i">
+        {{ opinion }}
+        <button @click="editOpinion(opinion, id)">Editar</button>
+        <button @click="delete_Opinion(id)">Eliminar</button>
+      </li>
+    </ul>
+
+    <!--     <input v-model="opinion" />
+    <button @click="agregarOpinion">Agregar opinión</button> -->
   </div>
 </template>
 
@@ -16,12 +29,21 @@ export default {
   name: "TodoEnUno",
   data() {
     return {
+      busqueda: "",
       opinion: "",
     };
   },
   components: {},
   computed: {
-    ...mapGetters(["getterAllGames", "getterAllOpinions"]),
+    opiniones() {
+      const { busqueda } = this;
+      return this.opinionesEncontradas(busqueda);
+    },
+    ...mapGetters([
+      "getterAllGames",
+      "getterAllOpinions",
+      "opinionesEncontradas",
+    ]),
     ...mapState({
       stateCount: (state) => state.countKey, // one way
       countAliasComputed: "countKey", // another way of writing it

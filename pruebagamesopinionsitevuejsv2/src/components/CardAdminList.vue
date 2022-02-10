@@ -24,20 +24,30 @@
               <tbody>
                 <tr
                   class="move-left"
-                  v-for="opinion in getterAllOpinions"
-                  v-bind:key="opinion.id"
+                  v-for="({ opinion, id }, i) in opiniones"
+                  :key="i"
                 >
-                  <th scope="row">{{ opinion.id }}</th>
-                  <td>{{ opinion.personName }}</td>
-                  <td>{{ opinion.gameName }}</td>
-                  <td>{{ opinion.opinion }}</td>
+                  <th scope="row">{{ id }}</th>
+                  <td>{{ personName }}</td>
+                  <td>{{ gameName }}</td>
+                  <td>{{ opinion }}</td>
                   <td>
-                    <button type="button" class="btn btn-danger">
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      @click="delete_Opinion(id)"
+                    >
                       Eliminar
                     </button>
                   </td>
                   <td>
-                    <button type="button" class="btn btn-info">Editar</button>
+                    <button
+                      type="button"
+                      class="btn btn-info"
+                      @click="editOpinion(opinion, id)"
+                    >
+                      Editar
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -88,7 +98,15 @@ export default {
   },
   components: {},
   computed: {
-    ...mapGetters(["getterAllGames", "getterAllOpinions"]),
+    opiniones() {
+      const { busqueda } = this;
+      return this.opinionesEncontradas(busqueda);
+    },
+    ...mapGetters([
+      "getterAllGames",
+      "getterAllOpinions",
+      "opinionesEncontradas",
+    ]),
     ...mapState({
       stateCount: (state) => state.countKey, // one way
       countAliasComputed: "countKey", // another way of writing it
@@ -120,7 +138,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 .move-left {
   text-align: start;
