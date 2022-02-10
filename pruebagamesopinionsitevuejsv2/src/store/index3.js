@@ -1,13 +1,10 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    countKey: 0,
-    misOpiniones: [],
     gamesArray: [
       {
         name: "Grand Theft Auto V",
@@ -33,45 +30,50 @@ export default new Vuex.Store({
         personName: "Rodrigo Zuniga",
         gameName: "GTA V",
         opinionText: "Ahí nomás la gráfica",
+        done: false,
       },
       {
         id: 2,
         personName: "Gary Medel",
         gameName: "Portal 2",
         opinionText: "Que sucede",
+        done: false,
       },
     ],
   },
 
-  getters: {
-    getAllGames: (state) => state.gamesArray, // Arrow function
-    getAllOpinions(state) {
-      // Normal Function needs return
-      return state.opinionsArray;
-    },
-  },
   mutations: {
-    AGREGAR_MI_OPINION(state, miOpinion) {
-      state.misOpiniones.push(miOpinion);
+    addOpinion: function (state, opinionText) {
+      state.opinionsArray.push({
+        id: state.opinionsArray.slice(-1)[0].id + 1,
+        opinionText: opinionText,
+        done: false,
+      });
+      console.log(state.opinionsArray);
     },
-    incrementMutation(state) {
-      state.countKey++;
-      console.log(state.countKey);
+    deleteOpinion: function (state, opinionId) {
+      let opinionIndex = state.opinionsArray.indexOf(
+        store.getters.thisOpinion(opinionId)
+      );
+      state.opinionsArray.splice(opinionIndex, 1);
+      delete state.opinionsArray[opinionIndex].text;
+      console.log(state.opinionsArray[opinionIndex]);
     },
+  },
 
-    incrementByMutation(state, payload) {
-      state.countKey += payload.amount;
+  actions: {},
+
+  getters: {
+    getAllGames: (state) => state.gamesArray,
+    getAllOpinions: (state) => state.opinionsArray,
+    getCurrentOpinion: (state) => state.opinionsArray,
+    thisOpinion: (state) => (opinionId) => {
+      return state.opinionsArray.find((opinion) => opinion.id === opinionId);
     },
   },
-  actions: {
-    agregar_Mi_Opinion({ commit }, miOpinion) {
-      alert("Se está ejecutando una acción");
-      commit("AGREGAR_MI_OPINION", miOpinion);
-    },
-    incrementAction(context) {
-      context.commit("incrementByMutation", { amount: 29 });
-    },
-  },
-  plugins: [createPersistedState()],
   modules: {},
 });
+
+//
+// https://www.youtube.com/watch?v=oxUyIzDbZts
+//

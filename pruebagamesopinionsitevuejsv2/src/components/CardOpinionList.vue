@@ -7,7 +7,7 @@
 
     <div class="container">
       <div
-        v-for="opinion in allOpinions"
+        v-for="opinion in getAllOpinions"
         v-bind:key="opinion.id"
         class="card move-left"
       >
@@ -28,23 +28,30 @@
         </div>
         <div class="collapse" :id="`collapse-${opinion.id}`">
           <div class="card-body">
-            <p>{{ opinion.opinion }}</p>
+            <p>{{ opinion.opinionText }}</p>
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
-
 <script>
+import { mapState } from "vuex";
+import { mapGetters } from "vuex";
+import { mapMutations } from "vuex";
+import { mapActions } from "vuex";
 export default {
-  name: "Opinions",
-  data: () => ({
-    allOpinions: "",
-  }),
-
-  mounted() {
-    this.allOpinions = this.$store.getters.getAllOpinions;
+  name: "CardOpinionList",
+  computed: {
+    ...mapState({
+      countComputed: (state) => state.countKey, // one way
+      countAliasComputed: "countKey", // another way of writing it
+    }),
+    ...mapGetters(["getAllGames", "getAllOpinions"]),
+  },
+  methods: {
+    ...mapMutations(["incrementMutation"]),
+    ...mapActions(["incrementAction"]),
   },
 };
 </script>

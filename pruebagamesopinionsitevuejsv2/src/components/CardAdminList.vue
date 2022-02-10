@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1>Administrando la Lista de Opiniones</h1>
+    <h1>{{ getAllOpinions[0].personName }}</h1>
 
     <div class="container alert alert-danger move-left" role="alert">
       No existen opiniones por ADMINISTRAR
@@ -24,13 +25,13 @@
               <tbody>
                 <tr
                   class="move-left"
-                  v-for="opinion in allOpinions"
+                  v-for="opinion in getAllOpinions"
                   v-bind:key="opinion.id"
                 >
                   <th scope="row">{{ opinion.id }}</th>
                   <td>{{ opinion.personName }}</td>
                   <td>{{ opinion.gameName }}</td>
-                  <td>{{ opinion.opinion }}</td>
+                  <td>{{ opinion.opinionText }}</td>
                   <td>
                     <button type="button" class="btn btn-danger">
                       Eliminar {{ opinion.id }}
@@ -49,25 +50,10 @@
       </div>
     </div>
     <div class="container">
-      <h1>Editando la opinión de {{ currentOpinion.gameName }}</h1>
-      <p>{{ currentOpinion }}</p>
+      <h1>Editando la opinión de {{ getAllOpinions.gameName }}</h1>
+      <p>{{ getAllOpinions }}</p>
 
-      <label for="inputName" class="form-label">Nombre:</label>
-      <input
-        type="text"
-        placeholder="pasar el parámetro personName aquí"
-        id="inputName"
-        class="form-control"
-        aria-describedby="inputYourName"
-      />
-
-      <label for="textarea" class="form-label">Opiniones:</label>
-      <textarea
-        class="form-control"
-        placeholder="Pasar el parámetro opinion aquí"
-        id="textarea"
-        style="height: 100px"
-      ></textarea>
+      <div><InteractFormInput /></div>
     </div>
     <button type="button" class="btn btn-primary">Regresar</button>
     <button type="button" class="btn btn-info">Guardar</button>
@@ -75,17 +61,27 @@
 </template>
 
 <script>
-export default {
-  name: "Admin",
-  data: () => ({
-    allOpinions: "",
-    currentOpinion: "",
-    textForm: "",
-  }),
+import InteractFormInput from "./InteractFormInput.vue";
 
-  mounted() {
-    this.allOpinions = this.$store.getters.getAllOpinions;
-    this.currentOpinion = this.$store.getters.getCurrentOpinion[0];
+import { mapState } from "vuex";
+import { mapGetters } from "vuex";
+import { mapMutations } from "vuex";
+import { mapActions } from "vuex";
+export default {
+  name: "CardAdminList",
+  components: {
+    InteractFormInput,
+  },
+  computed: {
+    ...mapGetters(["getAllGames", "getAllOpinions"]),
+    ...mapState({
+      countComputed: (state) => state.countKey, // one way
+      countAliasComputed: "countKey", // another way of writing it
+    }),
+  },
+  methods: {
+    ...mapMutations(["incrementMutation"]),
+    ...mapActions(["incrementAction"]),
   },
 };
 </script>

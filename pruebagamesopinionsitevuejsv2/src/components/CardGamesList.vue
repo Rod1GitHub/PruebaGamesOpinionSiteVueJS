@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section v-for="(game, index) in allGames" v-bind:key="index">
+    <section v-for="(game, index) in getAllGames" v-bind:key="index">
       <div class="card" style="width: 18rem">
         <img
           v-bind:src="game.background_image"
@@ -26,63 +26,49 @@
           >
             Opinar Index {{ index }}
           </button>
+          <div>
+            <!-- Modal -->
+            <div
+              class="modal fade"
+              :id="`modal-${index}`"
+              tabindex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      Modal title {{ index }} Escribe tu opinion para el juego:
+                      {{ game.name }}
+                    </h5>
 
-          <!-- Modal -->
-          <div
-            class="modal fade"
-            :id="`modal-${index}`"
-            tabindex="-1"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-          >
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">
-                    Modal title {{ index }} Escribe tu opinion para el juego:
-                    {{ game.name }}
-                  </h5>
-
-                  <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                  ></button>
-                </div>
-                <div class="modal-body">
-                  <label for="inputName" class="form-label">Nombre:</label>
-                  <input
-                    type="text"
-                    placeholder="Tu nombre aquí"
-                    id="inputName"
-                    class="form-control"
-                    aria-describedby="inputYourName"
-                  />
-
-                  <label for="textarea" class="form-label">Opiniones:</label>
-                  <textarea
-                    class="form-control"
-                    placeholder="Tu opinión debe ir aquí"
-                    id="textarea"
-                    style="height: 100px"
-                  ></textarea>
-                </div>
-                <div class="modal-footer">
-                  <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal"
-                  >
-                    Close
-                  </button>
-                  <button
-                    @click="myButtonMethod([`${index}`])"
-                    type="button"
-                    class="btn btn-primary"
-                  >
-                    Save changes {{ index }}
-                  </button>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                    <div><InteractFormInput /></div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button
+                      @click="myButtonMethod([`${index}`])"
+                      type="button"
+                      class="btn btn-primary"
+                    >
+                      Save changes {{ index }}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -103,25 +89,31 @@
 </template>
 
 <script>
+import InteractFormInput from "./InteractFormInput.vue";
+
+import { mapState } from "vuex";
+import { mapGetters } from "vuex";
+import { mapMutations } from "vuex";
+import { mapActions } from "vuex";
 export default {
-  name: "Games",
-  data: () => ({
-    allOpinions: "",
-    allGames: "",
-  }),
-
-  methods: {
-    myButtonMethod(index) {
-      console.log(index);
-    },
+  name: "CardGamesList",
+  components: {
+    InteractFormInput,
   },
-
-  mounted() {
-    this.allGames = this.$store.getters.getAllGames;
-    this.allOpinions = this.$store.getters.getAllOpinions;
+  computed: {
+    ...mapGetters(["getAllGames", "getAllOpinions"]),
+    ...mapState({
+      countComputed: (state) => state.countKey, // one way
+      countAliasComputed: "countKey", // another way of writing it
+    }),
+  },
+  methods: {
+    ...mapMutations(["incrementMutation"]),
+    ...mapActions(["incrementAction"]),
   },
 };
 </script>
+
 <style>
 .to-left {
   text-align: start;
