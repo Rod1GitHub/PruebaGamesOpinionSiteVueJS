@@ -25,7 +25,7 @@ export default new Vuex.Store({
           "https://pivigames.blog/wp-content/uploads/2018/07/portal-2-mac-2844-0-min.jpg",
       },
     ],
-
+    opiniones: [],
     opinionsArray: [
       {
         id: 1,
@@ -47,10 +47,10 @@ export default new Vuex.Store({
       const personName = "";
       const gameName = "";
 
-      state.opinionsArray.push({ id, personName, gameName, opinion });
+      state.opiniones.push({ id, personName, gameName, opinion });
     },
     SET_OPINIONS(state, opiniones) {
-      state.opinionsArray = opiniones;
+      state.opiniones = opiniones;
     },
 
     INCREMENT(state) {
@@ -68,18 +68,18 @@ export default new Vuex.Store({
     },
     edit_Opinion({ commit, state }, nuevaOpinion) {
       const { id } = nuevaOpinion;
-      let { opinionsArray } = state;
-      opinionsArray = opinionsArray.map((opinion) => {
+      let { opiniones } = state;
+      opiniones = opiniones.map((opinion) => {
         if (opinion.id === id) {
           return { opinion: nuevaOpinion.opinion, id };
         } else return opinion;
       });
 
-      commit("SET_OPINIONS", opinionsArray);
+      commit("SET_OPINIONS", opiniones);
     },
     delete_Opinion({ commit, state }, id) {
       // Tomo las opiniones del estado
-      const { opinionsArray } = state;
+      const { opiniones } = state;
       // Busco el índice de la opinionID que recibí en mis opiniones
       const indiceDeLaOpinionAEliminar = opiniones.findIndex(
         (opinion) => opinion.id === id
@@ -87,7 +87,7 @@ export default new Vuex.Store({
       // Uso el splice para eliminar el elemento del arreglo
       opiniones.splice(indiceDeLaOpinionAEliminar, 1);
       // Sobrescribo con la mutación, el nuevo arreglo de opiniones
-      commit("SET_OPINIONS", opinionsArray);
+      commit("SET_OPINIONS", opiniones);
     },
     increment(context) {
       context.commit("INCREMENT");
@@ -97,6 +97,13 @@ export default new Vuex.Store({
     },
   },
   getters: {
+    opinionesEncontradas: (state) => (busqueda) => {
+      const { opiniones } = state;
+      const opinionesEncontradas = opiniones.filter(({ opinion }) => {
+        return opinion.includes(busqueda);
+      });
+      return opinionesEncontradas;
+    },
     getterAllGames: (state) => state.gamesArray,
     getterAllOpinions(state) {
       return state.opinionsArray;

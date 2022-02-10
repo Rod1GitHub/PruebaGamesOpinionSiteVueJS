@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <h1>view: Home.vue</h1>
     <CardGamesList />
   </div>
 </template>

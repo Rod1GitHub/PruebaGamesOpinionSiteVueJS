@@ -1,26 +1,20 @@
 <template>
   <div id="app">
     <NavBar />
-    <RodriComponent />
-    <ElProfe />
-    <!--     <InteractArrayList /> -->
+    <TodoEnUno />
     <router-view></router-view>
   </div>
 </template>
 
 <script>
 import NavBar from "./components/NavBar.vue";
-/* import InteractArrayList from "./components/InteractArrayList.vue"; */
-import RodriComponent from "./components/RodriComponent.vue";
-import ElProfe from "./components/ElProfe.vue";
+import TodoEnUno from "./components/TodoEnUno.vue";
 
 export default {
   name: "MainApp",
   components: {
     NavBar,
-    /* InteractArrayList, */
-    RodriComponent,
-    ElProfe,
+    TodoEnUno,
   },
 };
 </script>

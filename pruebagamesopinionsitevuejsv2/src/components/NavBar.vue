@@ -47,4 +47,7 @@
   position: absolute;
   right: 0;
 }
+.navbar-nav {
+  background-color: #212529;
+}
 </style>

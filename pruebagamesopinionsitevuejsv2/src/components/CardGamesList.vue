@@ -1,6 +1,7 @@
 <template>
   <div>
-    <section v-for="(game, index) in getAllGames" v-bind:key="index">
+    <h1>Lista de juegos disponibles</h1>
+    <section v-for="(game, index) in getterAllGames" v-bind:key="index">
       <div class="card" style="width: 18rem">
         <img
           v-bind:src="game.background_image"
@@ -51,7 +52,26 @@
                     ></button>
                   </div>
                   <div class="modal-body">
-                    <div><InteractFormInput /></div>
+                    <div>
+                      <label for="inputName" class="form-label">Nombre:</label>
+                      <input
+                        type="text"
+                        placeholder="Tu nombre aquí"
+                        id="inputName"
+                        class="form-control"
+                        aria-describedby="inputYourName"
+                      />
+
+                      <label for="textarea" class="form-label"
+                        >Opiniones:</label
+                      >
+                      <textarea
+                        class="form-control"
+                        placeholder="Tu opinión debe ir aquí"
+                        id="textarea"
+                        style="height: 100px"
+                      ></textarea>
+                    </div>
                   </div>
                   <div class="modal-footer">
                     <button
@@ -66,7 +86,7 @@
                       type="button"
                       class="btn btn-primary"
                     >
-                      Save changes {{ index }}
+                      Guardar Opinion {{ index }}
                     </button>
                   </div>
                 </div>
@@ -76,7 +96,7 @@
         </div>
       </div>
     </section>
-    <!-- This is the way of passing an index into the key and into the value    
+    <!--     This is the way of passing an index into the key and into the value    
       <div> 
       <b-button variant="primary" v-b-modal:[`modal-${index}`]
         >Open modal {{ index }} : {{ game.name }}</b-button
@@ -84,32 +104,55 @@
       <b-modal v-bind:id="`modal-${index}`" title="BootstrapVue">
         <p class="my-4">Hello from modal {{ index }} : {{ game.name }}</p>
       </b-modal>
-    </div> -->
+    </div>  -->
   </div>
 </template>
-
 <script>
-import InteractFormInput from "./InteractFormInput.vue";
-
 import { mapState } from "vuex";
 import { mapGetters } from "vuex";
 import { mapMutations } from "vuex";
 import { mapActions } from "vuex";
+
 export default {
-  name: "CardGamesList",
-  components: {
-    InteractFormInput,
+  name: "TodoEnUno",
+  data() {
+    return {
+      busqueda: "",
+      opinion: "",
+    };
   },
+  components: {},
   computed: {
-    ...mapGetters(["getAllGames", "getAllOpinions"]),
+    ...mapGetters(["getterAllGames", "getterAllOpinions"]),
     ...mapState({
-      countComputed: (state) => state.countKey, // one way
+      stateCount: (state) => state.countKey, // one way
       countAliasComputed: "countKey", // another way of writing it
     }),
   },
   methods: {
-    ...mapMutations(["incrementMutation"]),
-    ...mapActions(["incrementAction"]),
+    ...mapMutations([
+      "INCREMENT",
+      "INCREMENT_BY",
+      "AGREGAR_OPINION",
+      "SET_OPINIONS",
+    ]),
+    ...mapActions([
+      "increment",
+      "increment_By",
+      "agregar_Opinion",
+      "edit_Opinion",
+      "delete_Opinion",
+    ]),
+    editOpinion(opinion, id) {
+      const nuevaOpinion = prompt("Ingrese la nueva opinion", opinion);
+      this.edit_Opinion({ opinion: nuevaOpinion, id });
+    },
+    agregarOpinion() {
+      const { opinion } = this;
+      this.agregar_Opinion(opinion);
+      const { user } = this;
+      this.this.opinion = "";
+    },
   },
 };
 </script>

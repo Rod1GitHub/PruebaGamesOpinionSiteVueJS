@@ -7,7 +7,7 @@
 
     <div class="container">
       <div
-        v-for="opinion in getAllOpinions"
+        v-for="opinion in getterAllOpinions"
         v-bind:key="opinion.id"
         class="card move-left"
       >
@@ -28,7 +28,7 @@
         </div>
         <div class="collapse" :id="`collapse-${opinion.id}`">
           <div class="card-body">
-            <p>{{ opinion.opinionText }}</p>
+            <p>{{ opinion.opinion }}</p>
           </div>
         </div>
       </div>
@@ -40,22 +40,49 @@ import { mapState } from "vuex";
 import { mapGetters } from "vuex";
 import { mapMutations } from "vuex";
 import { mapActions } from "vuex";
+
 export default {
-  name: "CardOpinionList",
+  name: "TodoEnUno",
+  data() {
+    return {
+      busqueda: "",
+      opinion: "",
+    };
+  },
+  components: {},
   computed: {
+    ...mapGetters(["getterAllGames", "getterAllOpinions"]),
     ...mapState({
-      countComputed: (state) => state.countKey, // one way
+      stateCount: (state) => state.countKey, // one way
       countAliasComputed: "countKey", // another way of writing it
     }),
-    ...mapGetters(["getAllGames", "getAllOpinions"]),
   },
   methods: {
-    ...mapMutations(["incrementMutation"]),
-    ...mapActions(["incrementAction"]),
+    ...mapMutations([
+      "INCREMENT",
+      "INCREMENT_BY",
+      "AGREGAR_OPINION",
+      "SET_OPINIONS",
+    ]),
+    ...mapActions([
+      "increment",
+      "increment_By",
+      "agregar_Opinion",
+      "edit_Opinion",
+      "delete_Opinion",
+    ]),
+    editOpinion(opinion, id) {
+      const nuevaOpinion = prompt("Ingrese la nueva opinion", opinion);
+      this.edit_Opinion({ opinion: nuevaOpinion, id });
+    },
+    agregarOpinion() {
+      const { opinion } = this;
+      this.agregar_Opinion(opinion);
+      this.opinion = "";
+    },
   },
 };
 </script>
-
 <style scoped>
 .alert {
   text-align: start;

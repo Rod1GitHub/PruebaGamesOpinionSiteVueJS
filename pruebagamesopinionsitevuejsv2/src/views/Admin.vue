@@ -1,6 +1,5 @@
 <template>
   <div class="admin">
-    <h1>view: Admin.vue</h1>
     <CardAdminList />
   </div>
 </template>

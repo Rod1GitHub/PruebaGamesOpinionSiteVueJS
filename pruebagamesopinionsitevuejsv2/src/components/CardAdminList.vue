@@ -1,7 +1,6 @@
 <template>
   <div>
     <h1>Administrando la Lista de Opiniones</h1>
-    <h1>{{ getAllOpinions[0].personName }}</h1>
 
     <div class="container alert alert-danger move-left" role="alert">
       No existen opiniones por ADMINISTRAR
@@ -25,22 +24,20 @@
               <tbody>
                 <tr
                   class="move-left"
-                  v-for="opinion in getAllOpinions"
+                  v-for="opinion in getterAllOpinions"
                   v-bind:key="opinion.id"
                 >
                   <th scope="row">{{ opinion.id }}</th>
                   <td>{{ opinion.personName }}</td>
                   <td>{{ opinion.gameName }}</td>
-                  <td>{{ opinion.opinionText }}</td>
+                  <td>{{ opinion.opinion }}</td>
                   <td>
                     <button type="button" class="btn btn-danger">
-                      Eliminar {{ opinion.id }}
+                      Eliminar
                     </button>
                   </td>
                   <td>
-                    <button type="button" class="btn btn-info">
-                      Editar {{ opinion.id }}
-                    </button>
+                    <button type="button" class="btn btn-info">Editar</button>
                   </td>
                 </tr>
               </tbody>
@@ -50,38 +47,76 @@
       </div>
     </div>
     <div class="container">
-      <h1>Editando la opinión de {{ getAllOpinions.gameName }}</h1>
-      <p>{{ getAllOpinions }}</p>
+      <h1>Editando la opinión de {{ getterAllOpinions[0].gameName }}</h1>
 
-      <div><InteractFormInput /></div>
+      <div>
+        <label for="inputName" class="form-label">Nombre:</label>
+        <input
+          type="text"
+          :placeholder="`${getterAllOpinions[0].personName}`"
+          id="inputName"
+          class="form-control"
+          aria-describedby="inputYourName"
+        />
+
+        <label for="textarea" class="form-label">Opiniones:</label>
+        <textarea
+          class="form-control"
+          :placeholder="`${getterAllOpinions[0].opinion}`"
+          id="textarea"
+          style="height: 100px"
+        ></textarea>
+      </div>
     </div>
     <button type="button" class="btn btn-primary">Regresar</button>
     <button type="button" class="btn btn-info">Guardar</button>
   </div>
 </template>
-
 <script>
-import InteractFormInput from "./InteractFormInput.vue";
-
 import { mapState } from "vuex";
 import { mapGetters } from "vuex";
 import { mapMutations } from "vuex";
 import { mapActions } from "vuex";
+
 export default {
-  name: "CardAdminList",
-  components: {
-    InteractFormInput,
+  name: "TodoEnUno",
+  data() {
+    return {
+      busqueda: "",
+      opinion: "",
+    };
   },
+  components: {},
   computed: {
-    ...mapGetters(["getAllGames", "getAllOpinions"]),
+    ...mapGetters(["getterAllGames", "getterAllOpinions"]),
     ...mapState({
-      countComputed: (state) => state.countKey, // one way
+      stateCount: (state) => state.countKey, // one way
       countAliasComputed: "countKey", // another way of writing it
     }),
   },
   methods: {
-    ...mapMutations(["incrementMutation"]),
-    ...mapActions(["incrementAction"]),
+    ...mapMutations([
+      "INCREMENT",
+      "INCREMENT_BY",
+      "AGREGAR_OPINION",
+      "SET_OPINIONS",
+    ]),
+    ...mapActions([
+      "increment",
+      "increment_By",
+      "agregar_Opinion",
+      "edit_Opinion",
+      "delete_Opinion",
+    ]),
+    editOpinion(opinion, id) {
+      const nuevaOpinion = prompt("Ingrese la nueva opinion", opinion);
+      this.edit_Opinion({ opinion: nuevaOpinion, id });
+    },
+    agregarOpinion() {
+      const { opinion } = this;
+      this.agregar_Opinion(opinion);
+      this.opinion = "";
+    },
   },
 };
 </script>
